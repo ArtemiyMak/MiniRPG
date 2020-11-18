@@ -90,6 +90,7 @@ namespace miniRPG
                 computerHeroes[i].PrintInfo();
             }
             Console.WriteLine("--------------------------------------");
+
         }
         
     }
