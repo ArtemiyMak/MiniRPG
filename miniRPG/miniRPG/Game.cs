@@ -27,12 +27,12 @@ namespace miniRPG
             List<Hero> playerHeroes = new List<Hero>();
             List<Hero> computerHeroes = new List<Hero>();
             List<Hero> allHeroes = new List<Hero>();
-            Hero globalWizard = new Hero("Wizard", 500, 60);
-            Hero globalThief = new Hero("Thief", 50, 200);
-            Hero globalPotionMaker = new Hero("PotionMaker", 250, 100);
-            Hero globalBerserk = new Hero("Berserk", 200, 160);
-            Hero globalArcher = new Hero("Archer", 300, 90);
-            Hero globalWarrior = new Hero("Warrior", 320, 120);
+            Wizard globalWizard = new Wizard("Wizard", 500, 60);
+            Thief globalThief = new Thief("Thief", 50, 200);
+            PotionMaker globalPotionMaker = new PotionMaker("PotionMaker", 250, 100);
+            Berserk globalBerserk = new Berserk("Berserk", 200, 160);
+            Archer globalArcher = new Archer("Archer", 300, 90);
+            Warrior globalWarrior = new Warrior("Warrior", 320, 120);
             allHeroes.Add(globalWizard);
             allHeroes.Add(globalThief);
             allHeroes.Add(globalPotionMaker);
@@ -49,7 +49,7 @@ namespace miniRPG
             while (num < heroes)
             {
                 int.TryParse(Console.ReadLine(), out int input);
-                while (playerHeroes.Contains(playerHeroes[input - 1]))
+                while (playerHeroes.Contains(allHeroes[input - 1]))
                 {
                     Console.WriteLine("Нет, введи персонажей, которых еще нет!");
                     int.TryParse(Console.ReadLine(), out input);
@@ -71,27 +71,57 @@ namespace miniRPG
             Team playerTeam = new Team(heroes, playerTeamName, playerHeroes);
             Team computerTeam = new Team(heroes, computerTeamName, computerHeroes);
             Console.Title = $"MiniRPG: {playerTeamName} vs {computerTeamName}";
-
-
-            Console.WriteLine($"Команда {playerTeamName}");
-            Console.WriteLine("--------------------------------------");
-            for (int i = 0; i < heroes; ++i)
+            Console.Clear();
+            while (in_game)
             {
-                Console.Write(i + 1);
-                playerHeroes[i].PrintInfo();
+                Console.WriteLine($"Команда {playerTeamName}");
+                Console.WriteLine("--------------------------------------");
+                for (int i = 0; i < heroes; ++i)
+                {
+                    Console.Write(i + 1);
+                    playerHeroes[i].PrintInfo();
+                }
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine();
+                Console.WriteLine($"Команда {computerTeamName}");
+                Console.WriteLine("--------------------------------------");
+                for (int i = 0; i < heroes; ++i)
+                {
+                    Console.Write(i + 1);
+                    computerHeroes[i].PrintInfo();
+                }
+                Console.WriteLine("--------------------------------------");
+                Console.Write("Выбери, кем атаковать: ");
+                int.TryParse(Console.ReadLine(), out int playerAttacker);
+                while (playerHeroes[playerAttacker - 1].Health == 0)
+                {
+                    Console.WriteLine("Выбери, кем атаковать: (Мертвыми атаковать нельзя)");
+                    int.TryParse(Console.ReadLine(), out playerAttacker);
+                }
+                Console.Write("Выбери, кого атаковать: ");
+                int.TryParse(Console.ReadLine(), out int playerTarget);
+                while (playerHeroes[playerTarget - 1].Health == 0)
+                {
+                    Console.WriteLine("Выбери, кого атаковать: (Мертвыми атаковать нельзя)");
+                    int.TryParse(Console.ReadLine(), out playerTarget);
+                }
+                Console.WriteLine();
+                int computerTarget = Generator.Next(0, heroes);
+                int computerAttacker = Generator.Next(0, heroes);
+                while (computerHeroes[playerAttacker - 1].Health == 0)
+                {
+                    computerAttacker = Generator.Next(0, heroes);
+                }
+                while (computerHeroes[playerTarget - 1].Health == 0)
+                {
+                    computerTarget = Generator.Next(0, heroes);
+                }
+                Console.Clear();
+                int playerDamage = playerHeroes[playerAttacker].CalculateDamage();
+                int computerDamage = computerHeroes[computerAttacker].CalculateDamage();
+                computerHeroes[playerTarget].GetDamage(playerDamage);
+                playerHeroes[computerTarget].GetDamage(computerDamage);
             }
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine();
-            Console.WriteLine($"Команда {computerTeamName}");
-            Console.WriteLine("--------------------------------------");
-            for (int i = 0; i < heroes; ++i)
-            {
-                Console.Write(i + 1);
-                computerHeroes[i].PrintInfo();
-            }
-            Console.WriteLine("--------------------------------------");
-
-        }
-        
+        }        
     }
 }

@@ -6,9 +6,11 @@ namespace miniRPG
     class Program
     {
         static void Main(string[] args)
-        {            
+        {
+            Game game = new Game();
+            game.MainGame();
             /*
-            Console.Clear();
+            
             while (in_game)
             {                          
                              
