@@ -7,9 +7,9 @@ namespace miniRPG
     class Hero
     {
         Random random = new Random();
-        public string Name { get; set; }
-        public int Health { get; set; }
-        public int Damage { get; set; }
+        public string Name { get; private set; }
+        public int Health { get; private set; }
+        public int Damage { get; private set; }
         public Hero(string name, int health, int damage)
         {
             Name = name;
