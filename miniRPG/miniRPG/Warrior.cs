@@ -6,12 +6,14 @@ namespace miniRPG
 {
     class Warrior : Hero
     {
-        string name = "Warrior";
-        int health = 320;
-        int damage = 120;
-        public Warrior() : base(name, health, damage)
+        public string name;
+        public int health;
+        public int damage;
+        public Warrior(string name, int health, int damage) : base(name, health, damage)
         {
-            
+            name = "Warrior";
+            health = 320;
+            damage = 120;
         }
     }
 }
