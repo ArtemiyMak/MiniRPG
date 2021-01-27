@@ -10,26 +10,17 @@ namespace miniRPG
         {
             Name = name;
             Heroes = heroes;
+            Computer = computer;
         }
-        public int HeroesNum { get; set; }
         public string Name { get; set; }
         public List<Hero> Heroes { get; set; }
+        public bool Computer { get; set; }
         public Random generator = new Random();
-        public int GetNumHeroes()
-        {
-            int.TryParse(Console.ReadLine(), out int heroes);
-            while (heroes > 6 || heroes < 1)
-            {
-                Console.WriteLine("Нет, введи число от 1 до 6");
-                int.TryParse(Console.ReadLine(), out heroes);
-            }
-            return heroes;
-        }
         public void AddHero(Hero hero)
         {
             Heroes.Add(hero);
         }
-        public bool HaveHero(Hero hero)
+        public bool ContainsHero(Hero hero)
         {
             if (!Heroes.Contains(hero))
             {
@@ -40,6 +31,13 @@ namespace miniRPG
                 return false;
             }
         }
+        public int Attack(Hero attackHero, Hero targetHero)
+        {
+            int damage = attackHero.CalculateDamage();
+            targetHero.GetDamage(damage);
+            return damage;
+        }
+        
         /*
         public List<Hero> GetPlayerHeroes(List<Hero> playerHeroes)
         {

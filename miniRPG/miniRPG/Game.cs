@@ -27,6 +27,7 @@ namespace miniRPG
             List<Hero> playerHeroes = new List<Hero>();
             List<Hero> computerHeroes = new List<Hero>();
             List<Hero> allHeroes = new List<Hero>();
+
             Wizard globalWizard = new Wizard();
             Thief globalThief = new Thief();
             PotionMaker globalPotionMaker = new PotionMaker();
@@ -54,7 +55,7 @@ namespace miniRPG
                 int.TryParse(Console.ReadLine(), out int input);
                 if (num != 0)
                 {
-                    while (!playerTeam.HaveHero(allHeroes[input - 1]))
+                    while (!playerTeam.ContainsHero(allHeroes[input - 1]))
                     {
                         Console.WriteLine("Нет, введи персонажей, которых еще нет!");
                         int.TryParse(Console.ReadLine(), out input);
@@ -70,27 +71,27 @@ namespace miniRPG
                     num++;
                 }
             }
-            int computerNum = Generator.Next(1, 7);
+            int computerNum = Generator.Next(0, 6);
             num = 0;
             while (num < heroes)
             {
                 if (num != 0)
                 {
-                    while (computerTeam.HaveHero(allHeroes[computerNum - 1]))
+                    while (!computerTeam.ContainsHero(allHeroes[computerNum]))
                     {
-                        computerNum = Generator.Next(1, 7);
+                        computerNum = Generator.Next(0, 6);
                     }
-                    computerTeam.AddHero(allHeroes[computerNum - 1]);
-                    Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerNum - 1].Name}. ");
+                    computerTeam.AddHero(allHeroes[computerNum]);
+                    Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerNum].Name}.");
                     num++;
                 }
                 else
                 {
-                    computerTeam.AddHero(allHeroes[computerNum - 1]);
-                    Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerNum - 1].Name}. ");
+                    computerTeam.AddHero(allHeroes[computerNum]);
+                    Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerNum].Name}.");
                     num++;
                 }
-                computerNum = Generator.Next(1, 7);
+                computerNum = Generator.Next(0, 6);
             }
             System.Threading.Thread.Sleep(2500);
             Console.Title = $"MiniRPG: {playerTeamName} vs {computerTeamName}";
@@ -102,7 +103,7 @@ namespace miniRPG
                 for (int i = 0; i < heroes; ++i)
                 {
                     Console.Write(i + 1);
-                    playerHeroes[i].PrintInfo();
+                    playerTeam.Heroes[i].PrintInfo();
                 }
                 Console.WriteLine("--------------------------------------");
                 Console.WriteLine();
@@ -111,51 +112,51 @@ namespace miniRPG
                 for (int i = 0; i < heroes; ++i)
                 {
                     Console.Write(i + 1);
-                    computerHeroes[i].PrintInfo();
+                    computerTeam.Heroes[i].PrintInfo();
                 }
                 Console.WriteLine("--------------------------------------");
                 Console.Write("Выбери, кем атаковать: ");
-                int.TryParse(Console.ReadLine(), out int playerAttacker);
-                while (playerHeroes[playerAttacker - 1].Health == 0)
+                int.TryParse(Console.ReadLine(), out int playerAttackerNum);
+                while (playerTeam.Heroes[playerAttackerNum - 1].Health == 0)
                 {
                     Console.WriteLine("Выбери, кем атаковать: (Мертвыми атаковать нельзя)");
-                    int.TryParse(Console.ReadLine(), out playerAttacker);
+                    int.TryParse(Console.ReadLine(), out playerAttackerNum);
                 }
                 Console.Write("Выбери, кого атаковать: ");
-                int.TryParse(Console.ReadLine(), out int playerTarget);
-                while (computerHeroes[playerTarget - 1].Health == 0)
+                int.TryParse(Console.ReadLine(), out int playerTargetNum);
+                while (computerTeam.Heroes[playerTargetNum - 1].Health == 0)
                 {
                     Console.WriteLine("Выбери, кого атаковать: (Мертвого атаковать нельзя)");
-                    int.TryParse(Console.ReadLine(), out playerTarget);
+                    int.TryParse(Console.ReadLine(), out playerTargetNum);
                 }
                 Console.WriteLine();
-                int computerTarget = Generator.Next(0, heroes);
-                int computerAttacker = Generator.Next(0, heroes);
-                while (computerHeroes[computerAttacker].Health == 0)
+                int computerTargetNum = Generator.Next(0, heroes);
+                int computerAttackerNum = Generator.Next(0, heroes);
+                while (computerTeam.Heroes[computerAttackerNum].Health == 0)
                 {
-                    computerAttacker = Generator.Next(1, heroes + 1);
+                    computerAttackerNum = Generator.Next(0, heroes);
                 }
-                while (playerHeroes[computerTarget].Health == 0)
+                while (playerTeam.Heroes[computerTargetNum].Health == 0)
                 {
-                    computerTarget = Generator.Next(1, heroes + 1);
+                    computerTargetNum = Generator.Next(0, heroes);
                 }
                 Console.Clear();
-                int playerDamage = playerHeroes[playerAttacker - 1].CalculateDamage();
-                int computerDamage = computerHeroes[computerAttacker].CalculateDamage();
-                computerHeroes[playerTarget - 1].GetDamage(playerDamage);
-                playerHeroes[computerTarget].GetDamage(computerDamage);
-                Console.WriteLine($"{playerHeroes[playerAttacker - 1].Name} ({playerTeam.Name}) нанес {playerDamage} урона {computerHeroes[playerTarget - 1].Name} ({computerTeam.Name})");
-                Console.WriteLine($"{computerHeroes[computerAttacker].Name} ({computerTeam.Name}) нанес {computerDamage} урона {playerHeroes[computerTarget].Name} ({playerTeam.Name})");
+
+                int playerDamage = playerTeam.Attack(playerTeam.Heroes[playerAttackerNum - 1], computerTeam.Heroes[playerTargetNum]);
+                int computerDamage = computerTeam.Attack(computerTeam.Heroes[computerAttackerNum], playerTeam.Heroes[computerTargetNum]);
+
+                Console.WriteLine($"{playerTeam.Heroes[playerAttackerNum - 1].Name} ({playerTeam.Name}) нанес {playerDamage} урона {computerTeam.Heroes[playerTargetNum - 1].Name} ({computerTeam.Name})");
+                Console.WriteLine($"{computerTeam.Heroes[computerAttackerNum].Name} ({computerTeam.Name}) нанес {computerDamage} урона {playerTeam.Heroes[computerTargetNum].Name} ({playerTeam.Name})");
                 int deadPlayerHeroes = 0;
                 int deadComputerHeroes = 0;
-                foreach (Hero hero in playerHeroes)
+                foreach (Hero hero in playerTeam.Heroes)
                 {
                     if(hero.Health == 0)
                     {
                         deadPlayerHeroes++;
                     }
                 }
-                foreach (Hero hero in computerHeroes)
+                foreach (Hero hero in computerTeam.Heroes)
                 {
                     if (hero.Health == 0)
                     {
