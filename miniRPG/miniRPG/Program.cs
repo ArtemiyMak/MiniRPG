@@ -9,6 +9,7 @@ namespace miniRPG
         {
             Game game = new Game();
             game.MainGame();
+
             /*
             
             while (in_game)

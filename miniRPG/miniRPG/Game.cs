@@ -98,23 +98,9 @@ namespace miniRPG
             Console.Clear();
             while (in_game)
             {
-                Console.WriteLine($"Команда {playerTeamName}");
-                Console.WriteLine("--------------------------------------");
-                for (int i = 0; i < heroes; ++i)
-                {
-                    Console.Write(i + 1);
-                    playerTeam.Heroes[i].PrintInfo();
-                }
-                Console.WriteLine("--------------------------------------");
+                playerTeam.PrintTeamInfo();
                 Console.WriteLine();
-                Console.WriteLine($"Команда {computerTeamName}");
-                Console.WriteLine("--------------------------------------");
-                for (int i = 0; i < heroes; ++i)
-                {
-                    Console.Write(i + 1);
-                    computerTeam.Heroes[i].PrintInfo();
-                }
-                Console.WriteLine("--------------------------------------");
+                computerTeam.PrintTeamInfo();
                 Console.Write("Выбери, кем атаковать: ");
                 int.TryParse(Console.ReadLine(), out int playerAttackerNum);
                 while (playerTeam.Heroes[playerAttackerNum - 1].Health == 0)
