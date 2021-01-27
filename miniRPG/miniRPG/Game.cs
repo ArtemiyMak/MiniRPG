@@ -27,18 +27,21 @@ namespace miniRPG
             List<Hero> playerHeroes = new List<Hero>();
             List<Hero> computerHeroes = new List<Hero>();
             List<Hero> allHeroes = new List<Hero>();
-            Wizard globalWizard = new Wizard("Wizard", 500, 60);
-            Thief globalThief = new Thief("Thief", 50, 200);
-            PotionMaker globalPotionMaker = new PotionMaker("PotionMaker", 250, 100);
-            Berserk globalBerserk = new Berserk("Berserk", 200, 160);
-            Archer globalArcher = new Archer("Archer", 300, 90);
-            Warrior globalWarrior = new Warrior("Warrior", 320, 120);
+            Wizard globalWizard = new Wizard();
+            Thief globalThief = new Thief();
+            PotionMaker globalPotionMaker = new PotionMaker();
+            Berserk globalBerserk = new Berserk();
+            Archer globalArcher = new Archer();
+            Warrior globalWarrior = new Warrior();
             allHeroes.Add(globalWizard);
             allHeroes.Add(globalThief);
             allHeroes.Add(globalPotionMaker);
             allHeroes.Add(globalBerserk);
             allHeroes.Add(globalArcher);
             allHeroes.Add(globalWarrior);
+
+            Team playerTeam = new Team(playerTeamName, playerHeroes, false);
+            Team computerTeam = new Team(computerTeamName, computerHeroes, true);
             Console.WriteLine($"Вводи номера персонажей, которых хочешь добавить в свою команду({heroes})");
             for (int i = 0; i < 6; ++i)
             {
@@ -49,20 +52,20 @@ namespace miniRPG
             while (num < heroes)
             {
                 int.TryParse(Console.ReadLine(), out int input);
-                if (!(num == 0))
+                if (num != 0)
                 {
-                    while (playerHeroes.Contains(allHeroes[input - 1]))
+                    while (!playerTeam.HaveHero(allHeroes[input - 1]))
                     {
                         Console.WriteLine("Нет, введи персонажей, которых еще нет!");
                         int.TryParse(Console.ReadLine(), out input);
                     }
-                    playerHeroes.Add(allHeroes[input - 1]);
+                    playerTeam.AddHero(allHeroes[input - 1]);
                     Console.WriteLine($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
                     num++;
                 }
                 else
                 {
-                    playerHeroes.Add(allHeroes[input - 1]);
+                    playerTeam.AddHero(allHeroes[input - 1]);
                     Console.WriteLine($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
                     num++;
                 }
@@ -71,26 +74,25 @@ namespace miniRPG
             num = 0;
             while (num < heroes)
             {
-                if (!(num == 0))
+                if (num != 0)
                 {
-                    while (computerHeroes.Contains(allHeroes[computerNum - 1]))
+                    while (computerTeam.HaveHero(allHeroes[computerNum - 1]))
                     {
                         computerNum = Generator.Next(1, 7);
                     }
-                    computerHeroes.Add(allHeroes[computerNum - 1]);
+                    computerTeam.AddHero(allHeroes[computerNum - 1]);
                     Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerNum - 1].Name}. ");
                     num++;
                 }
                 else
                 {
-                    computerHeroes.Add(allHeroes[computerNum - 1]);
+                    computerTeam.AddHero(allHeroes[computerNum - 1]);
                     Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerNum - 1].Name}. ");
                     num++;
                 }
+                computerNum = Generator.Next(1, 7);
             }
             System.Threading.Thread.Sleep(2500);
-            Team playerTeam = new Team(heroes, playerTeamName, playerHeroes);
-            Team computerTeam = new Team(heroes, computerTeamName, computerHeroes);
             Console.Title = $"MiniRPG: {playerTeamName} vs {computerTeamName}";
             Console.Clear();
             while (in_game)

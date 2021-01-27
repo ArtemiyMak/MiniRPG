@@ -6,11 +6,9 @@ namespace miniRPG
 {
     class Archer : Hero
     {
-        public Archer(string name, int health, int damage) : base(name, health, damage)
+        public Archer() : base("Archer", 300, 90)
         {
-            Name = "Archer";
-            Health = 300;
-            Damage = 90;
+
         }
     }
 }

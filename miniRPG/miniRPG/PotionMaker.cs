@@ -6,11 +6,9 @@ namespace miniRPG
 {
     class PotionMaker : Hero
     {
-        public PotionMaker(string name, int health, int damage) : base(name, health, damage)
+        public PotionMaker() : base("PotionMaker", 250, 100)
         {
-            Name = "PotionMaker";
-            Health = 250;
-            Damage = 100;
+
         }
     }
 }
