@@ -6,7 +6,7 @@ namespace miniRPG
 {
     class Wizard : Hero
     {
-        public Wizard() : base ("Wizard", 500, 60)
+        public Wizard() : base ("Маг", 500, 60)
         {
 
         }

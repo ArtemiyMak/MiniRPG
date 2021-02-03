@@ -6,7 +6,7 @@ namespace miniRPG
 {
     class Thief : Hero
     {
-        public Thief() : base("Thief", 50, 200)
+        public Thief() : base("Вор", 50, 200)
         {
 
         }

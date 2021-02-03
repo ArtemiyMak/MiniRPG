@@ -6,7 +6,7 @@ namespace miniRPG
 {
     class Berserk : Hero
     {
-        public Berserk() : base("Berserk", 200, 160)
+        public Berserk() : base("Берсерк", 200, 160)
         {
 
         }

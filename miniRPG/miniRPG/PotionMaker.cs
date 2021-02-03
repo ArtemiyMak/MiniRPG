@@ -6,7 +6,7 @@ namespace miniRPG
 {
     class PotionMaker : Hero
     {
-        public PotionMaker() : base("PotionMaker", 250, 100)
+        public PotionMaker() : base("Зельевар", 250, 100)
         {
 
         }

@@ -6,7 +6,7 @@ namespace miniRPG
 {
     class Archer : Hero
     {
-        public Archer() : base("Archer", 300, 90)
+        public Archer() : base("Лучник", 300, 90)
         {
 
         }

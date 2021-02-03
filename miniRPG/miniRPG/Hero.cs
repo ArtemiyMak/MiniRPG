@@ -20,11 +20,15 @@ namespace miniRPG
         {
             if (Health > 0)
             {
-               Console.WriteLine($". {Name} ({Health} HP), базовый урон: {Damage}");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($".{Name} ({Health} HP), базовый урон: {Damage}");
+                Console.ForegroundColor = ConsoleColor.White;
             }
             else
             {
-                Console.WriteLine($". {Name} ({Health} HP), базовый урон: {Damage} [Убит]");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($".{Name} ({Health} HP), базовый урон: {Damage} [Убит]");
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
         public int CalculateDamage()
