@@ -18,18 +18,8 @@ namespace miniRPG
         }
         public void PrintInfo()
         {
-            if (Health > 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($".{Name} ({Health} HP), базовый урон: {Damage}");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($".{Name} ({Health} HP), базовый урон: {Damage} [Убит]");
-                Console.ForegroundColor = ConsoleColor.White;
-            }
+            string toPrint = Health > 0 ? $".{Name} ({Health} HP), базовый урон: {Damage}" : $".{Name} ({Health} HP), базовый урон: {Damage} [Убит]";
+            Console.WriteLine(toPrint);
         }
         public int CalculateDamage()
         {

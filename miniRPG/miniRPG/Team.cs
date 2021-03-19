@@ -16,40 +16,33 @@ namespace miniRPG
         public List<Hero> Heroes { get; set; }
         public bool Computer { get; set; }
         public Random Generator = new Random();
-
         public Hero CreateHero(int hero)
         {
             switch (hero)
             {
                 case 0:
                     {
-                        Warrior warrior = new Warrior();
-                        return warrior;
+                        return new Warrior();
                     }
                 case 1:
                     {
-                        Archer archer = new Archer();
-                        return archer;
+                        return new Archer();
                     }
                 case 2:
                     {
-                        Berserk berserk = new Berserk();
-                        return berserk;
+                        return new Berserk();
                     }
                 case 3:
                     {
-                        PotionMaker potionMaker = new PotionMaker();
-                        return potionMaker;
+                        return new PotionMaker();
                     }
                 case 4:
                     {
-                        Thief thief = new Thief();
-                        return thief;
+                        return new Thief();
                     }
                 case 5:
                     {
-                        Wizard wizard = new Wizard();
-                        return wizard;
+                        return new Wizard();
                     }
                 default:
                     {
@@ -64,53 +57,6 @@ namespace miniRPG
         public bool ContainsHero(Hero hero)
         {
             return Heroes.Contains(hero);
-        }
-        
-        public int GetAttackHero(Team playerTeam, Team computerTeam, int heroesNum)
-        {
-            if (!Computer)
-            {
-                Console.Write("Выбери, кем атаковать: ");
-                int.TryParse(Console.ReadLine(), out int playerAttackerNum);
-                while (playerTeam.Heroes[playerAttackerNum - 1].Health == 0)
-                {
-                    Console.WriteLine("Выбери, кем атаковать: (Мертвыми атаковать нельзя)");
-                    int.TryParse(Console.ReadLine(), out playerAttackerNum);
-                }
-                return playerAttackerNum;
-            }
-            else
-            {
-                int computerAttackerNum = Generator.Next(0, heroesNum);
-                while (computerTeam.Heroes[computerAttackerNum].Health == 0)
-                {
-                    computerAttackerNum = Generator.Next(0, heroesNum);
-                }
-                return computerAttackerNum;
-            }
-        }
-        public int GetTargetHero(Team playerTeam, Team computerTeam, int heroesNum)
-        {
-            if (!Computer)
-            {
-                Console.Write("Выбери, кого атаковать: ");
-                int.TryParse(Console.ReadLine(), out int playerTargetNum);
-                while (computerTeam.Heroes[playerTargetNum - 1].Health == 0)
-                {
-                    Console.WriteLine("Выбери, кого атаковать: (Мертвого атаковать нельзя) ");
-                    int.TryParse(Console.ReadLine(), out playerTargetNum);
-                }
-                return playerTargetNum;
-            }
-            else
-            {
-                int computerTargetNum = Generator.Next(0, heroesNum);
-                while (playerTeam.Heroes[computerTargetNum].Health == 0)
-                {
-                    computerTargetNum = Generator.Next(0, heroesNum);
-                }
-                return computerTargetNum;
-            }
         }
         public void Attack(Team attackTeam, Team targetTeam, Hero attackHero, Hero targetHero)
         {
@@ -142,6 +88,17 @@ namespace miniRPG
                 num++;
             }
             Console.WriteLine("--------------------------------------");
+        }
+        public bool CheckDeadHero(int num)
+        {
+            if(Heroes[num].Health == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

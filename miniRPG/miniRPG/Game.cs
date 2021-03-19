@@ -6,34 +6,110 @@ namespace miniRPG
 {
     class Game
     {
+        Random Generator = new Random();
+        public int GetAttackHero(Team playerTeam, Team computerTeam, int heroesNum, bool computer)
+        {
+            if (!computer)
+            {
+                Console.Write("Выбери, кем атаковать: ");
+                int.TryParse(Console.ReadLine(), out int playerAttackerNum);
+                while (playerTeam.CheckDeadHero(playerAttackerNum - 1))
+                //while (playerTeam.Heroes[playerAttackerNum - 1].Health == 0)
+                {
+                    Console.WriteLine("Выбери, кем атаковать: (Мертвыми атаковать нельзя)");
+                    int.TryParse(Console.ReadLine(), out playerAttackerNum);
+                }
+                return playerAttackerNum;
+            }
+            else
+            {
+                int computerAttackerNum = Generator.Next(0, heroesNum);
+                while (computerTeam.CheckDeadHero(computerAttackerNum))
+                //while (computerTeam.Heroes[computerAttackerNum].Health == 0)
+                {
+                    computerAttackerNum = Generator.Next(0, heroesNum);
+                }
+                return computerAttackerNum;
+            }
+        }
+        public int GetTargetHero(Team playerTeam, Team computerTeam, int heroesNum, bool computer)
+        {
+            if (!computer)
+            {
+                Console.Write("Выбери, кого атаковать: ");
+                int.TryParse(Console.ReadLine(), out int playerTargetNum);
+                while (computerTeam.CheckDeadHero(playerTargetNum - 1))
+                //while (computerTeam.Heroes[playerTargetNum - 1].Health == 0)
+                {
+                    Console.WriteLine("Выбери, кого атаковать: (Мертвого атаковать нельзя) ");
+                    int.TryParse(Console.ReadLine(), out playerTargetNum);
+                }
+                return playerTargetNum;
+            }
+            else
+            {
+                int computerTargetNum = Generator.Next(0, heroesNum);
+                //while (playerTeam.Heroes[computerTargetNum].Health == 0)
+                while (playerTeam.CheckDeadHero(computerTargetNum))
+                {
+                    computerTargetNum = Generator.Next(0, heroesNum);
+                }
+                return computerTargetNum;
+            }
+        }
         public void GetHeroes(Team team, int heroesNum, List<Hero> allHeroes)
         {
             Random Generator = new Random();
             if (!team.Computer)
             {
-                int num = 0;
-                while (num < heroesNum)
+                int countedHeroes = 0;
+                while (countedHeroes < heroesNum)
                 {
-                    int.TryParse(Console.ReadLine(), out int input);
-                    if (num != 0)
+                    int.TryParse(Console.ReadLine(), out int input); 
+                    if (countedHeroes != 0)
                     {
                         //team.ContainsHero(allHeroes[input - 1])
-                        Hero playerHero = team.CreateHero(input - 1);
-                        bool haveHero = playerHero.Equals(allHeroes[input - 1]);
+                        
+                        bool haveHero = false;
+                        foreach (Hero hero in team.Heroes)
+                        {
+                            Type heroType = hero.GetType();
+                            Type baseHeroType = allHeroes[input - 1].GetType();
+                            if (heroType == baseHeroType)
+                            {
+                                haveHero = true;
+                                break;
+                            }
+                        }
                         while (haveHero)
                         {
                             Console.WriteLine("Нет, введи персонажей, которых еще нет!");
                             int.TryParse(Console.ReadLine(), out input);
+                            foreach (Hero hero in team.Heroes)
+                            {
+                                Type heroType = hero.GetType();
+                                Type baseHeroType = allHeroes[input - 1].GetType();
+                                if (heroType == baseHeroType)
+                                {
+                                    haveHero = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    haveHero = false;
+                                }
+                            }
                         }
+                        Hero playerHero = team.CreateHero(input - 1);
                         team.AddHero(playerHero);
                         Console.WriteLine($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
-                        num++;
+                        countedHeroes++;
                     }
                     else
                     {
                         team.AddHero(team.CreateHero(input - 1));
                         Console.WriteLine($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
-                        num++;
+                        countedHeroes++;
                     }
                 }
             }
@@ -43,9 +119,38 @@ namespace miniRPG
                 int countedHeroes = 0;
                 while (countedHeroes < heroesNum)
                 {
-                    while (team.ContainsHero(allHeroes[computerHeroNumber]))
+                    bool haveHero = false;
+                    foreach (Hero hero in team.Heroes)
+                    {
+                        Type heroType = hero.GetType();
+                        Type baseHeroType = allHeroes[computerHeroNumber].GetType();
+                        if (heroType == baseHeroType)
+                        {
+                            haveHero = true;
+                            break;
+                        }
+                        else
+                        {
+                            haveHero = false;
+                        }
+                    }
+                    while (haveHero)
                     {
                         computerHeroNumber = Generator.Next(0, 6);
+                        foreach (Hero hero in team.Heroes)
+                        {
+                            Type heroType = hero.GetType();
+                            Type baseHeroType = allHeroes[computerHeroNumber].GetType();
+                            if (heroType == baseHeroType)
+                            {
+                                haveHero = true;
+                                break;
+                            }
+                            else
+                            {
+                                haveHero = false;
+                            }
+                        }
                     }
                     team.AddHero(team.CreateHero(computerHeroNumber));
                     Console.WriteLine($"added: {computerHeroNumber}");
@@ -101,7 +206,7 @@ namespace miniRPG
             }
             GetHeroes(playerTeam, heroes, allHeroes);
             GetHeroes(computerTeam, heroes, allHeroes);
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(1000);
             Console.Title = $"MiniRPG: {playerTeamName} vs {computerTeamName}";
             Console.Clear();
             while (in_game)
@@ -111,11 +216,11 @@ namespace miniRPG
                 Console.WriteLine();
                 computerTeam.PrintTeamInfo();
                 //генерация атакующих героев и целей
-                int playerAttackerNum = playerTeam.GetAttackHero(playerTeam, computerTeam, heroes);
-                int playerTargetNum = playerTeam.GetTargetHero(playerTeam, computerTeam, heroes);
+                int playerAttackerNum = GetAttackHero(playerTeam, computerTeam, heroes, false);
+                int playerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, false);
                 Console.WriteLine();
-                int computerAttackerNum = computerTeam.GetAttackHero(playerTeam, computerTeam, heroes);
-                int computerTargetNum = computerTeam.GetTargetHero(playerTeam, computerTeam, heroes);
+                int computerAttackerNum = GetAttackHero(playerTeam, computerTeam, heroes, true);
+                int computerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, true);
                 Console.Clear();
                 //атака
                 playerTeam.Attack(playerTeam, computerTeam, playerTeam.Heroes[playerAttackerNum - 1], computerTeam.Heroes[playerTargetNum - 1]);
@@ -130,8 +235,7 @@ namespace miniRPG
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Ничья! ");
                     }
-
-                    if (playerTeam.CheckTeamLive(playerTeam, heroes))
+                    else if (playerTeam.CheckTeamLive(playerTeam, heroes))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("Вы победили! ");
