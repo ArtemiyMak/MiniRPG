@@ -9,6 +9,7 @@ namespace miniRPG
         public Singleton singleton { get; set; }
         public int GetAttackHero(Team playerTeam, Team computerTeam, int heroesNum, bool computer)
         {
+            singleton = Singleton.getInstance();
             if (!computer)
             {
                 Console.Write("Выбери, кем атаковать: ");
@@ -34,6 +35,7 @@ namespace miniRPG
         }
         public int GetTargetHero(Team playerTeam, Team computerTeam, int heroesNum, bool computer)
         {
+            singleton = Singleton.getInstance();
             if (!computer)
             {
                 Console.Write("Выбери, кого атаковать: ");
@@ -59,6 +61,7 @@ namespace miniRPG
         }
         public void GetHeroes(Team team, int heroesNum, List<Hero> allHeroes)
         {
+            singleton = Singleton.getInstance();
             if (!team.Computer)
             {
                 int countedHeroes = 0;
@@ -66,9 +69,7 @@ namespace miniRPG
                 {
                     int.TryParse(Console.ReadLine(), out int input); 
                     if (countedHeroes != 0)
-                    {
-                        //team.ContainsHero(allHeroes[input - 1])
-                        
+                    {                        
                         bool haveHero = false;
                         foreach (Hero hero in team.Heroes)
                         {
@@ -161,6 +162,7 @@ namespace miniRPG
         }
         public void MainGame()
         {
+            singleton = Singleton.getInstance();
             Console.Title = "MiniRPG";
             bool in_game = true;
             Console.Write("Придумай имя своей команды: ");

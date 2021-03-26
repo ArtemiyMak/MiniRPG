@@ -18,13 +18,12 @@ namespace miniRPG
         }
         public void PrintInfo()
         {
-            string toPrint = Health > 0 ? $".{Name} ({Health} HP), базовый урон: {Damage}" : $".{Name} ({Health} HP), базовый урон: {Damage} [Убит]";
-            Console.WriteLine(toPrint);
+            Console.WriteLine(Health > 0 ? $".{Name} ({Health} HP), базовый урон: {Damage}" : $".{Name} ({Health} HP), базовый урон: {Damage} [Убит]");
         }
         public int CalculateDamage()
         {
-            int calculatingDamage = singleton.GetRandom(Damage / 4 * 3, Damage / 4 * 5);
-            return calculatingDamage;
+            singleton = Singleton.getInstance();
+            return singleton.GetRandom(Damage / 4 * 3, Damage / 4 * 5); ;
         }
         public void GetDamage(int gettingDamage)
         {

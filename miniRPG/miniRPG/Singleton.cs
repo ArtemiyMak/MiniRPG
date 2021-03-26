@@ -14,7 +14,9 @@ namespace miniRPG
         }
         public int GetRandom(int minValue, int maxValue)
         {
-            return random.Next(minValue, maxValue);
+            
+            int num = random.Next(minValue, maxValue);
+            return num;
         }
         public static Singleton getInstance()
         {
