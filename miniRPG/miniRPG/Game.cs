@@ -222,7 +222,7 @@ namespace miniRPG
                 int computerAttackerNum = GetAttackHero(playerTeam, computerTeam, heroes, true);
                 int computerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, true);
                 Console.Clear();
-                //атака
+                //атака 
                 int damage = playerTeam.Attack(playerTeam, computerTeam, playerTeam.ReturnHero(playerAttackerNum - 1), computerTeam.ReturnHero(playerTargetNum - 1));
                 Console.WriteLine($"{playerTeam.ReturnHero(playerAttackerNum - 1).Name} ({playerTeamName}) нанес {damage} урона {computerTeam.ReturnHero(playerTargetNum - 1).Name} ({computerTeamName})");
                 int computerDamage = computerTeam.Attack(computerTeam, playerTeam, computerTeam.ReturnHero(computerAttackerNum), playerTeam.ReturnHero(computerTargetNum));
