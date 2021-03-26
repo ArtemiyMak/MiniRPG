@@ -6,7 +6,7 @@ namespace miniRPG
 {
     class Game
     {
-        Random Generator = new Random();
+        public Singleton singleton { get; set; }
         public int GetAttackHero(Team playerTeam, Team computerTeam, int heroesNum, bool computer)
         {
             if (!computer)
@@ -23,11 +23,11 @@ namespace miniRPG
             }
             else
             {
-                int computerAttackerNum = Generator.Next(0, heroesNum);
+                int computerAttackerNum = singleton.GetRandom(0, heroesNum);
                 while (computerTeam.CheckDeadHero(computerAttackerNum))
                 //while (computerTeam.Heroes[computerAttackerNum].Health == 0)
                 {
-                    computerAttackerNum = Generator.Next(0, heroesNum);
+                    computerAttackerNum = singleton.GetRandom(0, heroesNum);
                 }
                 return computerAttackerNum;
             }
@@ -48,18 +48,17 @@ namespace miniRPG
             }
             else
             {
-                int computerTargetNum = Generator.Next(0, heroesNum);
+                int computerTargetNum = singleton.GetRandom(0, heroesNum);
                 //while (playerTeam.Heroes[computerTargetNum].Health == 0)
                 while (playerTeam.CheckDeadHero(computerTargetNum))
                 {
-                    computerTargetNum = Generator.Next(0, heroesNum);
+                    computerTargetNum = singleton.GetRandom(0, heroesNum);
                 }
                 return computerTargetNum;
             }
         }
         public void GetHeroes(Team team, int heroesNum, List<Hero> allHeroes)
         {
-            Random Generator = new Random();
             if (!team.Computer)
             {
                 int countedHeroes = 0;
@@ -115,7 +114,7 @@ namespace miniRPG
             }
             else
             {
-                int computerHeroNumber = Generator.Next(0, 6);
+                int computerHeroNumber = singleton.GetRandom(0, 6);
                 int countedHeroes = 0;
                 while (countedHeroes < heroesNum)
                 {
@@ -136,7 +135,7 @@ namespace miniRPG
                     }
                     while (haveHero)
                     {
-                        computerHeroNumber = Generator.Next(0, 6);
+                        computerHeroNumber = singleton.GetRandom(0, 6);
                         foreach (Hero hero in team.Heroes)
                         {
                             Type heroType = hero.GetType();
@@ -156,19 +155,18 @@ namespace miniRPG
                     Console.WriteLine($"added: {computerHeroNumber}");
                     Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerHeroNumber].Name}.");
                     countedHeroes++;
-                    computerHeroNumber = Generator.Next(0, 6);
+                    computerHeroNumber = singleton.GetRandom(0, 6);
                 }
             }
         }
         public void MainGame()
         {
-            Random Generator = new Random();
             Console.Title = "MiniRPG";
             bool in_game = true;
             Console.Write("Придумай имя своей команды: ");
             string playerTeamName = Console.ReadLine();
             List<string> ComputerTeamNames = new List<string>() { "Печеньки", "Доминаторы", "Хакеры", "Лисы", "RJ" };
-            int computerNumber = Generator.Next(0, 5);
+            int computerNumber = singleton.GetRandom(0, 5);
             string computerTeamName = ComputerTeamNames[computerNumber];
             Console.WriteLine($"Компьютер выбрал имя - {computerTeamName}");
             Console.WriteLine("Введи кол-во персонажей в команде(1-6)");

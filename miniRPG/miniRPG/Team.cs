@@ -12,15 +12,9 @@ namespace miniRPG
             Heroes = heroes;
             Computer = computer;
         }
-        public Singleton singleton { get; set; }
-        public void Start()
-        {
-            singleton = Singleton.getInstance();
-        }
         public string Name { get; set; }
         public List<Hero> Heroes { get; set; }
         public bool Computer { get; set; }
-        public Random Generator = new Random();
         public Hero CreateHero(int hero)
         {
             switch (hero)

@@ -7,12 +7,15 @@ namespace miniRPG
     class Singleton
     {
         private static Singleton instance;
-
+        private Random random;
         private Singleton()
         {
-
+            random = new Random();
         }
-
+        public int GetRandom(int minValue, int maxValue)
+        {
+            return random.Next(minValue, maxValue);
+        }
         public static Singleton getInstance()
         {
             if (instance == null)
