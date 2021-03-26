@@ -12,6 +12,11 @@ namespace miniRPG
             Heroes = heroes;
             Computer = computer;
         }
+        public Singleton singleton { get; set; }
+        public void Start()
+        {
+            singleton = Singleton.getInstance();
+        }
         public string Name { get; set; }
         public List<Hero> Heroes { get; set; }
         public bool Computer { get; set; }
@@ -58,11 +63,11 @@ namespace miniRPG
         {
             return Heroes.Contains(hero);
         }
-        public void Attack(Team attackTeam, Team targetTeam, Hero attackHero, Hero targetHero)
+        public int Attack(Team attackTeam, Team targetTeam, Hero attackHero, Hero targetHero)
         {
             int damage = attackHero.CalculateDamage();
             targetHero.GetDamage(damage);
-            Console.WriteLine($"{attackHero.Name} ({attackTeam.Name}) нанес {damage} урона {targetHero.Name} ({targetTeam.Name})");
+            return damage;
         }
         public bool CheckTeamLive(Team team, int heroesNum)
         {
@@ -99,6 +104,10 @@ namespace miniRPG
             {
                 return false;
             }
+        }
+        public Hero ReturnHero(int num)
+        {
+            return Heroes[num];
         }
     }
 }

@@ -7,6 +7,8 @@ namespace miniRPG
     {
         static void Main(string[] args)
         {
+            Random random = new Random();
+            
             Console.ForegroundColor = ConsoleColor.White;
             Game game = new Game();
             game.MainGame();

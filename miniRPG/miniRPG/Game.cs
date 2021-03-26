@@ -223,8 +223,10 @@ namespace miniRPG
                 int computerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, true);
                 Console.Clear();
                 //атака
-                playerTeam.Attack(playerTeam, computerTeam, playerTeam.Heroes[playerAttackerNum - 1], computerTeam.Heroes[playerTargetNum - 1]);
-                computerTeam.Attack(computerTeam, playerTeam, computerTeam.Heroes[computerAttackerNum], playerTeam.Heroes[computerTargetNum]);
+                int damage = playerTeam.Attack(playerTeam, computerTeam, playerTeam.ReturnHero(playerAttackerNum - 1), computerTeam.ReturnHero(playerTargetNum - 1));
+                Console.WriteLine($"{playerTeam.ReturnHero(playerAttackerNum - 1).Name} ({playerTeamName}) нанес {damage} урона {computerTeam.ReturnHero(playerTargetNum - 1).Name} ({computerTeamName})");
+                int computerDamage = computerTeam.Attack(computerTeam, playerTeam, computerTeam.ReturnHero(computerAttackerNum), playerTeam.ReturnHero(computerTargetNum));
+                Console.WriteLine($"{computerTeam.ReturnHero(computerAttackerNum).Name} ({computerTeamName}) нанес {computerDamage} урона {playerTeam.ReturnHero(computerTargetNum).Name} ({playerTeamName})");
                 //проверка команд
                 if (!(playerTeam.CheckTeamLive(playerTeam, heroes)) || !(computerTeam.CheckTeamLive(computerTeam, heroes)))
                 {
