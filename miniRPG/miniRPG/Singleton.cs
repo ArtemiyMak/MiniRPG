@@ -8,9 +8,11 @@ namespace miniRPG
     {
         private static Singleton instance;
         private Random random;
+        public PlayerInteract playerInteract;
         private Singleton()
         {
             random = new Random();
+            playerInteract = new PlayerInteract();
         }
         public int GetRandom(int minValue, int maxValue)
         {

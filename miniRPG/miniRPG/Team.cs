@@ -60,7 +60,7 @@ namespace miniRPG
                 return false;
             }
         }
-        public int Attack(Team attackTeam, Team targetTeam, Hero attackHero, Hero targetHero)
+        public int Attack(Hero attackHero, Hero targetHero)
         {
             int damage = attackHero.CalculateDamage();
             targetHero.GetDamage(damage);

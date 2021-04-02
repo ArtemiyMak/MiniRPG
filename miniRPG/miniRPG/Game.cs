@@ -160,12 +160,24 @@ namespace miniRPG
                 }
             }
         }
+        public bool IsGameOver(Team playerTeam, Team computerTeam, int heroes)
+        {
+            if (!(playerTeam.CheckTeamLive(playerTeam, heroes)) || !(computerTeam.CheckTeamLive(computerTeam, heroes)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void MainGame()
         {
             singleton = Singleton.getInstance();
             Console.Title = "MiniRPG";
             bool in_game = true;
             Console.Write("Придумай имя своей команды: ");
+            singleton.playerInteract.WriteStr("Придумай имя своей команды: ");
             string playerTeamName = Console.ReadLine();
             List<string> ComputerTeamNames = new List<string>() { "Печеньки", "Доминаторы", "Хакеры", "Лисы", "RJ" };
             int computerNumber = singleton.GetRandom(0, 5);
@@ -223,16 +235,16 @@ namespace miniRPG
                 int computerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, true);
                 Console.Clear();
                 //атака 
-                int damage = playerTeam.Attack(playerTeam, computerTeam, playerTeam.ReturnHero(playerAttackerNum - 1), computerTeam.ReturnHero(playerTargetNum - 1));
+                int damage = playerTeam.Attack(playerTeam.ReturnHero(playerAttackerNum - 1), computerTeam.ReturnHero(playerTargetNum - 1));
                 Console.WriteLine($"{playerTeam.ReturnHero(playerAttackerNum - 1).Name} ({playerTeamName}) нанес {damage} урона {computerTeam.ReturnHero(playerTargetNum - 1).Name} ({computerTeamName})");
-                int computerDamage = computerTeam.Attack(computerTeam, playerTeam, computerTeam.ReturnHero(computerAttackerNum), playerTeam.ReturnHero(computerTargetNum));
+                int computerDamage = computerTeam.Attack(computerTeam.ReturnHero(computerAttackerNum), playerTeam.ReturnHero(computerTargetNum));
                 Console.WriteLine($"{computerTeam.ReturnHero(computerAttackerNum).Name} ({computerTeamName}) нанес {computerDamage} урона {playerTeam.ReturnHero(computerTargetNum).Name} ({playerTeamName})");
                 //проверка команд
-                if (!(playerTeam.CheckTeamLive(playerTeam, heroes)) || !(computerTeam.CheckTeamLive(computerTeam, heroes)))
+                if(IsGameOver(playerTeam, computerTeam, heroes))
                 {
                     in_game = false;
                     Console.Clear();
-                    if(!playerTeam.CheckTeamLive(playerTeam, heroes) && !computerTeam.CheckTeamLive(computerTeam, heroes))
+                    if (!playerTeam.CheckTeamLive(playerTeam, heroes) && !computerTeam.CheckTeamLive(computerTeam, heroes))
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Ничья! ");
