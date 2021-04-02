@@ -12,13 +12,12 @@ namespace miniRPG
             singleton = Singleton.getInstance();
             if (!computer)
             {
-                Console.Write("Выбери, кем атаковать: ");
-                int.TryParse(Console.ReadLine(), out int playerAttackerNum);
+                singleton.playerInteract.WriteLineStr("Выбери, кем атаковать: ");
+                int playerAttackerNum = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), heroesNum, 1);
                 while (playerTeam.CheckDeadHero(playerAttackerNum - 1))
-                //while (playerTeam.Heroes[playerAttackerNum - 1].Health == 0)
                 {
-                    Console.WriteLine("Выбери, кем атаковать: (Мертвыми атаковать нельзя)");
-                    int.TryParse(Console.ReadLine(), out playerAttackerNum);
+                    singleton.playerInteract.WriteLineStr("Выбери, кем атаковать: (Мертвыми атаковать нельзя)");
+                    playerAttackerNum = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), heroesNum, 1);
                 }
                 return playerAttackerNum;
             }
@@ -26,7 +25,6 @@ namespace miniRPG
             {
                 int computerAttackerNum = singleton.GetRandom(0, heroesNum);
                 while (computerTeam.CheckDeadHero(computerAttackerNum))
-                //while (computerTeam.Heroes[computerAttackerNum].Health == 0)
                 {
                     computerAttackerNum = singleton.GetRandom(0, heroesNum);
                 }
@@ -38,20 +36,18 @@ namespace miniRPG
             singleton = Singleton.getInstance();
             if (!computer)
             {
-                Console.Write("Выбери, кого атаковать: ");
-                int.TryParse(Console.ReadLine(), out int playerTargetNum);
+                singleton.playerInteract.WriteStr("Выбери, кого атаковать: ");
+                int playerTargetNum = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), heroesNum, 1);
                 while (computerTeam.CheckDeadHero(playerTargetNum - 1))
-                //while (computerTeam.Heroes[playerTargetNum - 1].Health == 0)
                 {
-                    Console.WriteLine("Выбери, кого атаковать: (Мертвого атаковать нельзя) ");
-                    int.TryParse(Console.ReadLine(), out playerTargetNum);
+                    singleton.playerInteract.WriteStr("Выбери, кого атаковать: (Мертвого атаковать нельзя) ");
+                    playerTargetNum = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), heroesNum, 1);
                 }
                 return playerTargetNum;
             }
             else
             {
                 int computerTargetNum = singleton.GetRandom(0, heroesNum);
-                //while (playerTeam.Heroes[computerTargetNum].Health == 0)
                 while (playerTeam.CheckDeadHero(computerTargetNum))
                 {
                     computerTargetNum = singleton.GetRandom(0, heroesNum);
@@ -67,9 +63,9 @@ namespace miniRPG
                 int countedHeroes = 0;
                 while (countedHeroes < heroesNum)
                 {
-                    int.TryParse(Console.ReadLine(), out int input); 
+                    int input = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), 6, 1);
                     if (countedHeroes != 0)
-                    {                        
+                    {
                         bool haveHero = false;
                         foreach (Hero hero in team.Heroes)
                         {
@@ -83,8 +79,8 @@ namespace miniRPG
                         }
                         while (haveHero)
                         {
-                            Console.WriteLine("Нет, введи персонажей, которых еще нет!");
-                            int.TryParse(Console.ReadLine(), out input);
+                            singleton.playerInteract.WriteLineStr("Нет, введи персонажей, которых еще нет!");
+                            input = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), 6, 1);
                             foreach (Hero hero in team.Heroes)
                             {
                                 Type heroType = hero.GetType();
@@ -102,13 +98,13 @@ namespace miniRPG
                         }
                         Hero playerHero = team.CreateHero(input - 1);
                         team.AddHero(playerHero);
-                        Console.WriteLine($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
+                        singleton.playerInteract.WriteLineStr($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
                         countedHeroes++;
                     }
                     else
                     {
                         team.AddHero(team.CreateHero(input - 1));
-                        Console.WriteLine($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
+                        singleton.playerInteract.WriteLineStr($"Персонаж {allHeroes[input - 1].Name} добавлен. ");
                         countedHeroes++;
                     }
                 }
@@ -153,8 +149,7 @@ namespace miniRPG
                         }
                     }
                     team.AddHero(team.CreateHero(computerHeroNumber));
-                    Console.WriteLine($"added: {computerHeroNumber}");
-                    Console.WriteLine($"Компьютер добавил персонажа {allHeroes[computerHeroNumber].Name}.");
+                    singleton.playerInteract.WriteLineStr($"Компьютер добавил персонажа {allHeroes[computerHeroNumber].Name}.");
                     countedHeroes++;
                     computerHeroNumber = singleton.GetRandom(0, 6);
                 }
@@ -174,22 +169,16 @@ namespace miniRPG
         public void MainGame()
         {
             singleton = Singleton.getInstance();
-            Console.Title = "MiniRPG";
+            singleton.playerInteract.GetTitle("MiniRPG");
             bool in_game = true;
-            Console.Write("Придумай имя своей команды: ");
             singleton.playerInteract.WriteStr("Придумай имя своей команды: ");
-            string playerTeamName = Console.ReadLine();
-            List<string> ComputerTeamNames = new List<string>() { "Печеньки", "Доминаторы", "Хакеры", "Лисы", "RJ" };
-            int computerNumber = singleton.GetRandom(0, 5);
+            string playerTeamName = singleton.playerInteract.GetStr();
+            List<string> ComputerTeamNames = new List<string>() { "Печеньки", "Доминаторы", "Хакеры", "Лисы", "RJ", "название команды которое я не придумал" };
+            int computerNumber = singleton.GetRandom(0, 6);
             string computerTeamName = ComputerTeamNames[computerNumber];
-            Console.WriteLine($"Компьютер выбрал имя - {computerTeamName}");
-            Console.WriteLine("Введи кол-во персонажей в команде(1-6)");
-            int.TryParse(Console.ReadLine(), out int heroes);
-            while (heroes > 6 || heroes < 1)
-            {
-                Console.WriteLine("Нет, введи число от 1 до 6");
-                int.TryParse(Console.ReadLine(), out heroes);
-            }
+            singleton.playerInteract.WriteLineStr($"Компьютер выбрал имя - {computerTeamName}");
+            singleton.playerInteract.WriteLineStr("Введи кол-во персонажей в команде(1-6)");
+            int heroes = singleton.playerInteract.GetNumber(singleton.playerInteract.GetStr(), 6, 1);
             List<Hero> playerHeroes = new List<Hero>();
             List<Hero> computerHeroes = new List<Hero>();
             List<Hero> allHeroes = new List<Hero>();
@@ -209,61 +198,59 @@ namespace miniRPG
 
             Team playerTeam = new Team(playerTeamName, playerHeroes, false);
             Team computerTeam = new Team(computerTeamName, computerHeroes, true);
-            Console.WriteLine($"Вводи номера персонажей, которых хочешь добавить в свою команду({heroes})");
-            
+            singleton.playerInteract.WriteLineStr($"Вводи номера персонажей, которых хочешь добавить в свою команду({heroes})");
             for (int i = 0; i < 6; ++i)
             {
-                Console.Write(i + 1);
+                singleton.playerInteract.WriteInt(i + 1);
                 allHeroes[i].PrintInfo();
             }
             GetHeroes(playerTeam, heroes, allHeroes);
             GetHeroes(computerTeam, heroes, allHeroes);
             System.Threading.Thread.Sleep(1000);
-            Console.Title = $"MiniRPG: {playerTeamName} vs {computerTeamName}";
+            singleton.playerInteract.GetTitle($"MiniRPG: {playerTeamName} vs {computerTeamName}");
             Console.Clear();
             while (in_game)
             {
                 //данные о командах
                 playerTeam.PrintTeamInfo();
-                Console.WriteLine();
+                singleton.playerInteract.WriteSkip();
                 computerTeam.PrintTeamInfo();
                 //генерация атакующих героев и целей
                 int playerAttackerNum = GetAttackHero(playerTeam, computerTeam, heroes, false);
                 int playerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, false);
-                Console.WriteLine();
+                singleton.playerInteract.WriteSkip();
                 int computerAttackerNum = GetAttackHero(playerTeam, computerTeam, heroes, true);
                 int computerTargetNum = GetTargetHero(playerTeam, computerTeam, heroes, true);
                 Console.Clear();
                 //атака 
                 int damage = playerTeam.Attack(playerTeam.ReturnHero(playerAttackerNum - 1), computerTeam.ReturnHero(playerTargetNum - 1));
-                Console.WriteLine($"{playerTeam.ReturnHero(playerAttackerNum - 1).Name} ({playerTeamName}) нанес {damage} урона {computerTeam.ReturnHero(playerTargetNum - 1).Name} ({computerTeamName})");
+                singleton.playerInteract.WriteLineStr($"{playerTeam.ReturnHero(playerAttackerNum - 1).Name} ({playerTeamName}) нанес {damage} урона {computerTeam.ReturnHero(playerTargetNum - 1).Name} ({computerTeamName})");
                 int computerDamage = computerTeam.Attack(computerTeam.ReturnHero(computerAttackerNum), playerTeam.ReturnHero(computerTargetNum));
-                Console.WriteLine($"{computerTeam.ReturnHero(computerAttackerNum).Name} ({computerTeamName}) нанес {computerDamage} урона {playerTeam.ReturnHero(computerTargetNum).Name} ({playerTeamName})");
+                singleton.playerInteract.WriteLineStr($"{computerTeam.ReturnHero(computerAttackerNum).Name} ({computerTeamName}) нанес {computerDamage} урона {playerTeam.ReturnHero(computerTargetNum).Name} ({playerTeamName})");
                 //проверка команд
-                if(IsGameOver(playerTeam, computerTeam, heroes))
+                if (IsGameOver(playerTeam, computerTeam, heroes))
                 {
                     in_game = false;
                     Console.Clear();
                     if (!playerTeam.CheckTeamLive(playerTeam, heroes) && !computerTeam.CheckTeamLive(computerTeam, heroes))
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("Ничья! ");
+                        singleton.playerInteract.WriteLineStr("Ничья! ");
                     }
                     else if (playerTeam.CheckTeamLive(playerTeam, heroes))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Вы победили! ");
-                        Console.Title = "YOU WIN=)";
+                        singleton.playerInteract.WriteLineStr("Вы победили! ");
+                        singleton.playerInteract.GetTitle("Победа!");
                     }
                     else
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine("Вы проиграли...");
-                        Console.Title = "YOU LOSE=(";
+                        singleton.playerInteract.WriteLineStr("Вы проиграли...");
+                        singleton.playerInteract.GetTitle("Поражение...");
                     }
-                    Console.ReadLine();
                 }
             }
-        }        
+        }
     }
 }
